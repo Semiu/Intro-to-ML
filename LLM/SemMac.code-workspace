@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "../../cve-automated-detection"
+		},
+		{
+			"path": "../../data-engineering"
+		},
+		{
+			"path": ".."
+		}
+	]
+}
