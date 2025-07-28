@@ -1,0 +1,15 @@
+boto3
+pandas
+configparser
+psycopg2
+black
+pymupdf
+pillow
+langchain
+pytesseract
+nltk
+fuzzywuzzy
+box
+sentence_transformers
+langchain_aws
+langchain_community

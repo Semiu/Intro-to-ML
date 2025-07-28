@@ -1,0 +1,28 @@
+RETURN_SOURCE_DOCUMENTS: True
+MAX_LENGHT: 100
+VECTOR_COUNT: 4
+CHUNK_SIZE: 500
+CHUNK_OVERLAP: 50
+THRESHOLD: 10
+DB: gold_mde_output
+TABLE: ri2_reason_for_submission_llm
+BUCKET_NAME: 'cdrh-databricks-prod-landing'
+EMBEDDING_PATH: "./ri2-reason-for-sub/models"
+MODEL_NAME_PATH: "./ri2-reason-for-sub/models/roberta-base-squad2"
+MODEL_TYPE: 'llama'
+MODEL_BIN_PATH: './ri2-reason-for-sub/models/Meta-Llama-3-8B-Instruct-Q5_K_M.gguf'
+QUESTION_LIST: ['what is the purpose of the submission?', 'what is the reason for the submission?', 'what is the basis for the submission?']
+MAX_NEW_TOKENS: 1000
+TEMPERATURE: 0.01
+HUGGINGFACEHUB_API_TOKEN: ''
+KEYWORD_SETS: [['510summary'], ['510ksum'], ['coverletter'], ['coversheet'], ['reviewmemo'], ['reviewer memo']]
+SORTING_ORDER: {'reviewmemo': 0, '510ksum': 1, '510sum': 2, 'coverletter': 3, 'coversheet': 4}
+CLASSIFICATION_THRESHOLD: 10
+FINAL_OUTPUT_TABLE: "r12_reason_for_submission_llm"
+RI2_REASON_FOR_SUBMISSION_TABLE: '{"submission_num": "string", "product_code": "string","docid": "string", "num_of_pages": "int", "r_creation_date": "string", "r_modify_date": "string", "submissiontype": "string", "Pdf_S3_URL": "string", "Object_Name": "string", "Device_Name":"string", "reason": "string", "found": "string", "Page":"string", "relevancy_score": "string", "ocr": "string", "coordinates": "string", "Date_Updated": "string"}'
+OUTPUT_BUCKET: "ri-2"
+ssm_endpoint: ""
+custom_sts_endpoint_url: ""
+security:
+    secret_name: ''
+    region_name: ''

@@ -1,0 +1,31 @@
+name: conda_venv
+channels:
+  - pytorch
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.11
+  - boto3
+  - pandas
+  - configparser
+  - psycopg2
+  - black
+  - faiss-cpu
+  - pymupdf
+  - pillow
+  - langchain
+  - pytesseract
+  - nltk
+  - fuzzywuzzy
+  - pytorch
+  - torchvision 
+  - torchaudio 
+  - pytorch-cuda=12.1
+  - pip
+  - pip:
+      - sentence-transformers
+      - langchain-aws
+      - langchain-community
+      - langchain_chroma
+      - chromadb
+      - rank_bm25
