@@ -5,7 +5,8 @@ __pycache__/
 
 # C extensions
 *.so
-
+# under working directory
+archive_to_be_sorted/
 # Distribution / packaging
 .Python
 build/
