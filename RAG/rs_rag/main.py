@@ -1,4 +1,5 @@
-""" Main module """
+"""Main module"""
+
 import os
 import pandas as pd
 import numpy as np
@@ -15,6 +16,7 @@ from data_generation.export_data import load_data_with_reason
 from config_class.mde.logger import define_logger as logger
 
 log = logger()
+
 
 def main(inscope_df):
     """
@@ -88,31 +90,33 @@ if __name__ == "__main__":
         oimt_df = get_rs_metadata_df()
         # Get the reason for submission metadata df
         log.info(f"OIMT data df out - length {len(oimt_df)}")
-    
+
         # Get the list of object_ids to be processed
         object_ids = get_rs_document_ids(oimt_df)
         log.info(f"unprocessed {len(object_ids)} object IDs grabbed")
-    
+
         # Get the corresponding extracted text from the to-be-processed object_ids
         document_extracted_text_df = get_extracted_text_df(object_ids)
-        
+
         if not document_extracted_text_df.empty:
-            
-            log.info(f"Text extract DF grabbed of total {len(document_extracted_text_df)}")
-            
+
+            log.info(
+                f"Text extract DF grabbed of total {len(document_extracted_text_df)}"
+            )
+
             # Join oimt_df and document_extracted_text_df to have full metadata
             full_metadata_df = pd.merge(
-                        document_extracted_text_df,
-                        oimt_df,
-                        how="left",
-                        left_on="document_id",
-                        right_on="r_object_id",
-                    )
+                document_extracted_text_df,
+                oimt_df,
+                how="left",
+                left_on="document_id",
+                right_on="r_object_id",
+            )
             log.info(f"Dfs length {len(full_metadata_df)} merged")
-            
+
             # Get the reason for submission metadata df for documents in scope
             inscope_df = get_inscope_df(full_metadata_df)
-            
+
             if not inscope_df.empty:
                 inscope_df_grouped = inscope_df.groupby("folder_id")
                 main(inscope_df_grouped)

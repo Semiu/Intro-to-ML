@@ -9,6 +9,7 @@ from config_class.mde.logger import define_logger as logger
 home_dir = os.getcwd()
 log = logger()
 
+
 def assume_role_with_arn(role_arn):
     """
     Assume an AWS role using its ARN
@@ -23,9 +24,7 @@ def assume_role_with_arn(role_arn):
         # Create STS client
         endpoint = ""
 
-        sts_client = boto3.client(
-            "sts", endpoint_url=endpoint, region_name="us-west-1"
-        )
+        sts_client = boto3.client("sts", endpoint_url=endpoint, region_name="us-west-1")
 
         # Generate a unique session name using timestamp
         import datetime

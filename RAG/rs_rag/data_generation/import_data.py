@@ -22,6 +22,7 @@ cutoff = pd.to_datetime(
 
 assumed_session = assume_role_with_arn(ROLE_ARN)
 
+
 def get_s3_path(bucket_name, data):
     """
     Args:
@@ -35,7 +36,7 @@ def get_s3_path(bucket_name, data):
         k = data["folder_id"]
     except KeyError as e:
         k = data["source_submission_num"]
-        
+
     download_date = data["doc_download_date"]
     # If it's a string, convert it to a datetime object
     if isinstance(download_date, str):
@@ -44,7 +45,7 @@ def get_s3_path(bucket_name, data):
         except ValueError:
             # Try a more detailed format if needed
             download_date = datetime.strptime(download_date, "%Y-%m-%d %H:%M:%S")
-            
+
     date_formatted = download_date.strftime("%Y%m%d")
 
     if download_date < cutoff:  # if before cutoff, look in root directory
@@ -65,7 +66,7 @@ def download_file_from_s3(bucket_name, metadata, local_path):
     - local_path (str): Local path where the downloaded file will be saved.
     """
     log = logger()
-    
+
     s3 = assumed_session.client("s3")
 
     doc_id = metadata["r_object_id"]
@@ -73,7 +74,7 @@ def download_file_from_s3(bucket_name, metadata, local_path):
         k = metadata["folder_id"]
     except KeyError as e:
         k = metadata["source_submission_num"]
-        
+
     download_date = metadata["doc_download_date"]
     # If it's a string, convert it to a datetime object
     if isinstance(download_date, str):
@@ -82,7 +83,7 @@ def download_file_from_s3(bucket_name, metadata, local_path):
         except ValueError:
             # Try a more detailed format if needed
             download_date = datetime.strptime(download_date, "%Y-%m-%d %H:%M:%S")
-            
+
     date_formatted = download_date.strftime("%Y%m%d")
 
     if download_date < cutoff:  # if before cutoff, look in root directory

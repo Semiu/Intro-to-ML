@@ -27,33 +27,34 @@ def return_reason_for_submission(group_df):
 
     try:
         metadata = retriever_results(group_df)
-    
+
         if metadata is None:
             return None
         elif "reason not found" in metadata["reason"].strip().lower():
             return None
         with tempfile.TemporaryDirectory() as temp_dir:
-                # Download the PDF file from S3 to a local temporary directory
-                local_pdf_path = os.path.join(temp_dir, "temp_pdf_file.pdf")
-                download_file_from_s3(BUCKET_NAME, metadata, local_pdf_path)
-    
-                if metadata["ocr"] == "No":
-                    # Get reason coordinates using pymupdf and if any coordinate is None, use tesseract
-                    reason_coordinates = process_pdf_page_with_pymupdf(metadata, local_pdf_path
-                    )
-                    # Get coordinates. check if any coordinate value from pymupdf is None, use tesseract
-                else:
-                    reason_coordinates = process_pdf_page_with_pytesseract(
-                        local_pdf_path=local_pdf_path,
-                        page_number=int(metadata["page"]),
-                        target_text=metadata["document_section"],
-                    )
-    
-                # Remove document section
-                del metadata["document_section"]
-    
-                # Add coordinates to metadata
-                metadata["coordinates"] = json.dumps(reason_coordinates)
+            # Download the PDF file from S3 to a local temporary directory
+            local_pdf_path = os.path.join(temp_dir, "temp_pdf_file.pdf")
+            download_file_from_s3(BUCKET_NAME, metadata, local_pdf_path)
+
+            if metadata["ocr"] == "No":
+                # Get reason coordinates using pymupdf and if any coordinate is None, use tesseract
+                reason_coordinates = process_pdf_page_with_pymupdf(
+                    metadata, local_pdf_path
+                )
+                # Get coordinates. check if any coordinate value from pymupdf is None, use tesseract
+            else:
+                reason_coordinates = process_pdf_page_with_pytesseract(
+                    local_pdf_path=local_pdf_path,
+                    page_number=int(metadata["page"]),
+                    target_text=metadata["document_section"],
+                )
+
+            # Remove document section
+            del metadata["document_section"]
+
+            # Add coordinates to metadata
+            metadata["coordinates"] = json.dumps(reason_coordinates)
         return metadata
     except Exception as e:
         log.error(

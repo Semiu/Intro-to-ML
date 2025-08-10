@@ -49,13 +49,12 @@ def ensemble_retrieval(group_df):
     docs = parent_splitter.split_documents(docu)
 
     # Filter documents/chunks based on the condition
-    documents = [
-        doc
-        for doc in docs if doc is not None]
+    documents = [doc for doc in docs if doc is not None]
     documents = [
         doc
         for doc in docs
-        if "[ ]" not in doc.page_content and "[]" not in doc.page_content]
+        if "[ ]" not in doc.page_content and "[]" not in doc.page_content
+    ]
 
     # Initializes the bm25 retriever for lexical search (ranks documents based on keyword relevance)
     bm25_retriever = BM25Retriever.from_documents(documents)
@@ -176,7 +175,7 @@ def retriever_results(group_df):
         best_score = 0
         best_metadata = {}
         best_doc = None
-        
+
         # Filtered out None if present
         source_documents = [doc for doc in source_documents if doc is not None]
 
@@ -199,7 +198,7 @@ def retriever_results(group_df):
                     )
                     if response_score is None:
                         continue
-    
+
                     if int(response_score) > best_score:
                         best_score = response_score
                         best_metadata = (

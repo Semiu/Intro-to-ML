@@ -15,7 +15,7 @@ config = mde_premarket.Config(os.path.join(home_dir, "config.yml"))
 
 def parse_to_datetime(val):
     """
-    Parses the date time value 
+    Parses the date time value
     """
     if isinstance(val, datetime):
         return val
@@ -28,7 +28,8 @@ def parse_to_datetime(val):
             except ValueError:
                 return None  # Or raise
     return None
-    
+
+
 def insert_reason_for_submission_data(rs_df):
     """
     Inserts (row-by-row) the processed files for reason for submission metadataframe into its postgres table
@@ -51,20 +52,54 @@ def insert_reason_for_submission_data(rs_df):
     for idx, row in rs_df.iterrows():
         try:
             # Convert each field as needed, with fallback to None where applicable
-            unique_id = str(row.get("unique_id")) if pd.notnull(row.get("unique_id")) else None
+            unique_id = (
+                str(row.get("unique_id")) if pd.notnull(row.get("unique_id")) else None
+            )
             doc_id = str(row.get("doc_id")) if pd.notnull(row.get("doc_id")) else None
-            submission_num = str(row.get("submission_num")) if pd.notnull(row.get("submission_num")) else None
-            num_of_pages = int(row.get("num_of_pages")) if pd.notnull(row.get("num_of_pages")) else None
-            submissiontype = str(row.get("submissiontype")) if pd.notnull(row.get("submissiontype")) else None
-            pdf_s3_url = str(row.get("pdf_s3_url")) if pd.notnull(row.get("pdf_s3_url")) else None
-            object_name = str(row.get("object_name")) if pd.notnull(row.get("object_name")) else None
+            submission_num = (
+                str(row.get("submission_num"))
+                if pd.notnull(row.get("submission_num"))
+                else None
+            )
+            num_of_pages = (
+                int(row.get("num_of_pages"))
+                if pd.notnull(row.get("num_of_pages"))
+                else None
+            )
+            submissiontype = (
+                str(row.get("submissiontype"))
+                if pd.notnull(row.get("submissiontype"))
+                else None
+            )
+            pdf_s3_url = (
+                str(row.get("pdf_s3_url"))
+                if pd.notnull(row.get("pdf_s3_url"))
+                else None
+            )
+            object_name = (
+                str(row.get("object_name"))
+                if pd.notnull(row.get("object_name"))
+                else None
+            )
             reason = str(row.get("reason")) if pd.notnull(row.get("reason")) else None
             found = str(row.get("found")) if pd.notnull(row.get("found")) else None
             page = int(row["page"]) if pd.notnull(row.get("page")) else None
-            relevancy_score = float(row["relevancy_score"]) if pd.notnull(row.get("relevancy_score")) else None
+            relevancy_score = (
+                float(row["relevancy_score"])
+                if pd.notnull(row.get("relevancy_score"))
+                else None
+            )
             ocr = str(row.get("ocr")) if pd.notnull(row.get("ocr")) else None
-            coordinates = str(row.get("coordinates")) if pd.notnull(row.get("coordinates")) else None
-            date_updated = parse_to_datetime(row.get("date_updated")) if pd.notnull(row.get("date_updated")) else None
+            coordinates = (
+                str(row.get("coordinates"))
+                if pd.notnull(row.get("coordinates"))
+                else None
+            )
+            date_updated = (
+                parse_to_datetime(row.get("date_updated"))
+                if pd.notnull(row.get("date_updated"))
+                else None
+            )
 
             # Use psycopg2.sql to safely format the table name
             insert_query = sql.SQL(
@@ -99,7 +134,9 @@ def insert_reason_for_submission_data(rs_df):
 
             # Commit the transaction
             conn.commit()
-            log.info(f"Succesfully inserted into {reason_for_submission_schema}.{table}")
+            log.info(
+                f"Succesfully inserted into {reason_for_submission_schema}.{table}"
+            )
         except Exception as e:
             # Roll back the transaction on error
             conn.rollback()
@@ -153,4 +190,4 @@ def load_data_with_reason(
     insert_reason_for_submission_data(load_df)
 
     # Just print to console for dev/testing
-    #print(load_df)
+    # print(load_df)

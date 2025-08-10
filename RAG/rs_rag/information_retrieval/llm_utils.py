@@ -27,13 +27,12 @@ embeddings = BedrockEmbeddings(
     region_name="us-west-1",
 )
 
+
 def setup_llm():
     """
     Sets up the AWS Bedrock LLM class object for Meta's LLama 3B
     """
-    llm = BedrockLLM(
-        region_name="us-west-1", model_id="meta.llama3-70b-instruct-v1:0"
-    )
+    llm = BedrockLLM(region_name="us-west-1", model_id="meta.llama3-70b-instruct-v1:0")
     return llm
 
 

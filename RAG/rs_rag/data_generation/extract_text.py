@@ -144,7 +144,9 @@ def process_pdf_page_with_pytesseract(local_pdf_path, page_number, target_text):
             return coordinates
     except Exception as e:
         # Log the error
-        log.error(f"An error occurred while process_pdf_page_with_pytesseract: {str(e)}")
+        log.error(
+            f"An error occurred while process_pdf_page_with_pytesseract: {str(e)}"
+        )
         # You might want to handle the error more gracefully based on your use case
         return {"x1": None, "y1": None, "x2": None, "y2": None}
 
@@ -240,7 +242,7 @@ def process_row(row):
         pdf_path = os.path.join(from_s3_pdf_temp_dir, object_id)
 
         download_file_from_s3(bucket_name, row, pdf_path)
-        
+
         s3_path = get_s3_path(bucket_name, row)
 
         unique_id = f"""{submission_num.lower()}-{object_id.replace('.pdf', '')}"""
@@ -257,7 +259,7 @@ def process_row(row):
             "object_name": row["object_name"],
             "number_of_pages": str(row["number_of_pages"]),
             "submissiontype": row["folder_type"],
-            'doc_download_date': row["doc_download_date"].strftime("%Y-%m-%d %H:%M:%S"),
+            "doc_download_date": row["doc_download_date"].strftime("%Y-%m-%d %H:%M:%S"),
             "page": int(page_number),
             "ocr": "No" if searchable else "Yes",
             "s3_pdf_path": s3_path,
@@ -327,11 +329,11 @@ def process_pdf_page_with_pymupdf(metadata, local_path):
     """
     page_number = int(metadata["page"])
     target_text = metadata["document_section"]
-    
+
     # Find coordinates of the target text in the PDF page
     text_coordinates = find_text_coordinates_pymupdf(
-            local_path, page_number - 1, target_text
-        )  # Adjust page numbering
+        local_path, page_number - 1, target_text
+    )  # Adjust page numbering
     return text_coordinates
 
 
