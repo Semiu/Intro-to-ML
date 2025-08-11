@@ -11,7 +11,11 @@ Tensors generalize vectors and matrics to potentially higher dimension. Scalar i
 
 
 ### The mechanics of training deep neural network
+Neural Network in PyTorch
 
+Neural network is implemented using the `torch.nn.Module`, giving the flexibility to define individual custom network architecture. The `__init__` constructor defines the network layers and specify how they interact with the `forward` method. It is `forward` method that describes how the input data passes through the network to produce the computation graph.
+
+There is also a `backward` method, which we do not implement ourselves, used to compute gradients of the loss function with respect to the model parameters.
 
 
 
