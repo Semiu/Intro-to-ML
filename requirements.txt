@@ -1,1 +1,9 @@
 uv==0.8.8
+pandas
+numpy
+scikit-learn
+scipy
+torch
+torchvision
+torchtext
+black

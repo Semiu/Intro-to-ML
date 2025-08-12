@@ -1,4 +1,4 @@
-"""Script to train a model on multiple devices using PyTorch."""
+"""Script to parrallel-train a model, with compatibility with CUDA, MPS and CPU, using PyTorch."""
 
 import torch
 import torch.nn.functional as F
@@ -39,7 +39,7 @@ def ddp_setup(rank: int, world_size: int):
     else:
         backend = "gloo"   # Works on CPU, MPS, Windows
 
-    
+    # Initialize the process group
     init_process_group(backend=backend, rank=rank, world_size=world_size)
 
     # Prefer LOCAL_RANK if launched with torchrun
@@ -188,7 +188,7 @@ def compute_accuracy(model, dataloader, device):
     correct = 0.0
     total_examples = 0
 
-    for idx, (features, labels) in enumerate(dataloader):
+    for _, (features, labels) in enumerate(dataloader):
         features, labels = features.to(device), labels.to(device)
 
         with torch.no_grad():
@@ -211,6 +211,6 @@ if __name__ == "__main__":
         if DEVICE.type == "cuda":
             print("CUDA GPUs:", torch.cuda.device_count())
 
-    torch.manual_seed(123)
+    torch.manual_seed(123) # For reproducibility
     num_epochs = 3
     main(rank, world_size, num_epochs)
